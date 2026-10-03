@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Reserva de Buses - Iniciar Sesión</title>
+    <!-- Tailwind CSS por CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Nuestra hoja de estilos centralizada -->
+    <link rel="stylesheet" href="/src/styles.css">
+</head>
+<body class="flex flex-col min-h-screen justify-between">
+
+    <!-- BARRA SUPERIOR (A juego con la landing) -->
+    <header class="bg-blue-600 text-white py-4 px-8 flex justify-between items-center shadow-md">
+        <h1 class="font-bold text-base tracking-tight">Sistema de Reserva de Buses</h1>
+        <a href="index.html" class="text-xs font-semibold bg-white text-blue-600 px-3 py-1.5 rounded hover:bg-slate-100 transition">
+            Volver al Inicio
+        </a>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL (Formulario de Login centrado) -->
+    <main class="flex items-center justify-center px-4 py-12 flex-grow">
+        <div class="admin-card w-full max-w-md p-8 space-y-6 bg-white">
+            <div class="text-center space-y-2">
+                <h2 class="font-bold text-slate-900 text-lg">Acceso Administrativo</h2>
+                <p class="text-xs text-slate-500">Ingrese sus credenciales para gestionar el sistema</p>
+            </div>
+
+            <!-- FORMULARIO DE ACCESO -->
+            <form onsubmit="event.preventDefault(); window.location.href='admin-detalle-empresa.html';" class="space-y-4">
+                <div>
+                    <label class="block text-[11px] font-semibold text-slate-600 mb-1">Correo Electrónico</label>
+                    <input type="email" required placeholder="admin@transporte.com" class="w-full border border-slate-300 rounded px-3 py-2 text-xs focus:outline-none focus:border-blue-500 bg-white">
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-semibold text-slate-600 mb-1">Contraseña</label>
+                    <input type="password" required placeholder="••••••••" class="w-full border border-slate-300 rounded px-3 py-2 text-xs focus:outline-none focus:border-blue-500 bg-white">
+                </div>
+
+                <button onclick="event.preventDefault(); window.location.href='admin-empresa.html';" class="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold py-2.5 rounded transition shadow-sm">
+                    Ingresar al Panel
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <!-- PIE DE PÁGINA SIMPLE -->
+    <footer class="bg-slate-900 text-slate-400 py-4 px-8 text-xs flex justify-between items-center">
+        <span>Sistema de Reserva de Buses</span>
+        <span>Panel Administrativo Seguro</span>
+    </footer>
+
+</body>
+</html>

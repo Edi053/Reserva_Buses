@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Forzamos el color de fondo general en #F2F2F2 */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #F2F2F2 !important;
+    color: #333333;
+    margin: 0;
+    padding: 0;
+}
+
+/* Tarjetas administrativas blancas para que resalten sobre el fondo gris claro */
+.admin-card {
+    background: #ffffff;
+    border-radius: 4px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+    border: 1px solid #e2e8f0;
+}
+
+/* Estilos para tablas */
+.admin-table {
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+}
+
+.admin-table th {
+    font-size: 11px;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background-color: rgba(248, 250, 252, 0.5);
+    border-bottom: 1px solid #e2e8f0;
+    padding: 12px 24px;
+}
+
+.admin-table td {
+    padding: 16px 24px;
+    font-size: 12px;
+    color: #334155;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.admin-table tr:hover {
+    background-color: #f8fafc;
+    transition: background-color 0.2s ease;
+}
+
+/* Pestañas de navegación */
+.tab-btn {
+    padding: 8px 4px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #64748b;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.tab-btn:hover {
+    color: #1d4ed8;
+}
+
+.tab-btn.active {
+    color: #2563eb;
+    font-weight: 600;
+    border-bottom: 2px solid #2563eb;
+}

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Transporte - Panel de Administración</title>
+    <!-- Tailwind CSS por CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Nuestra hoja de estilos personalizada -->
+    <link rel="stylesheet" href="/src/styles.css">
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- BARRA SUPERIOR -->
+    <header class="bg-white border-b border-slate-200 py-4 px-8 flex justify-between items-center shadow-sm">
+        <h1 class="text-blue-600 font-bold text-xl tracking-tight">Sistema de Transporte</h1>
+        <button onclick="window.location.href='login.html'" class="bg-red-600 hover:bg-red-700 text-white text-xs font-semibold px-4 py-2 rounded transition">
+            Cerrar Sesión
+        </button>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="max-w-7xl mx-auto px-6 py-8 w-full flex-grow">
+        
+        <!-- CABECERA DE SECCIÓN Y BOTÓN PRINCIPAL -->
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-lg font-bold text-slate-800">Gestión de Empresas</h2>
+            <button id="btnToggleForm" onclick="toggleFormulario()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-4 py-2 rounded transition">
+                + Nueva Empresa
+            </button>
+        </div>
+
+        <!-- FORMULARIO OCULTO PARA NUEVA EMPRESA (Se muestra al hacer clic en el botón superior) -->
+        <div id="formContainer" class="admin-card p-6 mb-8 hidden">
+            <form onsubmit="event.preventDefault(); alert('Empresa registrada con éxito (Simulación)'); toggleFormulario();">
+                <div class="mb-4">
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Nombre de la Empresa</label>
+                    <input type="text" required placeholder="Ej. Transportes del Norte" class="w-full border border-slate-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Persona Responsable (opcional)</label>
+                    <input type="text" placeholder="Ej. Juan Pérez" class="w-full border border-slate-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Número de Contacto</label>
+                    <input type="text" required placeholder="Ej. +505 8888 8888" class="w-full border border-slate-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-500">
+                </div>
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold py-2.5 rounded transition">
+                    Agregar Empresa
+                </button>
+            </form>
+        </div>
+
+        <!-- TABLA DE EMPRESAS -->
+        <div class="admin-card overflow-hidden">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="border-b border-slate-200 text-[11px] font-bold text-slate-500 uppercase tracking-wider bg-slate-50/50">
+                        <th class="py-3 px-6">Nombre</th>
+                        <th class="py-3 px-6">Contacto</th>
+                        <th class="py-3 px-6">Estado</th>
+                        <th class="py-3 px-6 text-right">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 text-xs text-slate-700">
+                    <!-- Fila 1 -->
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="py-4 px-6 font-medium text-slate-900">Transportes Rápido Andino</td>
+                        <td class="py-4 px-6 text-slate-500">Carlos Mendoza<br><span class="text-[11px]">+51987654321</span></td>
+                        <td class="py-4 px-6">
+                            <span class="bg-emerald-100 text-emerald-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">Activa</span>
+                        </td>
+                        <td class="py-4 px-6 text-right space-x-3">
+                            <a href="admin-detalle-empresa.html" class="text-blue-600 hover:underline font-medium">Seleccionar</a>
+                            <a href="#" onclick="alert('Editar empresa')" class="text-emerald-600 hover:underline font-medium">Editar</a>
+                            <a href="#" onclick="alert('Desactivar empresa')" class="text-amber-600 hover:underline font-medium">Desactivar</a>
+                            <a href="#" onclick="alert('Eliminar empresa')" class="text-red-600 hover:underline font-medium">Eliminar</a>
+                        </td>
+                    </tr>
+                    <!-- Fila 2 -->
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="py-4 px-6 font-medium text-slate-900">Bus Express del Sur</td>
+                        <td class="py-4 px-6 text-slate-500">María López<br><span class="text-[11px]">+51999888777</span></td>
+                        <td class="py-4 px-6">
+                            <span class="bg-emerald-100 text-emerald-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">Activa</span>
+                        </td>
+                        <td class="py-4 px-6 text-right space-x-3">
+                            <a href="admin-detalle-empresa.html" class="text-blue-600 hover:underline font-medium">Seleccionar</a>
+                            <a href="#" onclick="alert('Editar empresa')" class="text-emerald-600 hover:underline font-medium">Editar</a>
+                            <a href="#" onclick="alert('Desactivar empresa')" class="text-amber-600 hover:underline font-medium">Desactivar</a>
+                            <a href="#" onclick="alert('Eliminar empresa')" class="text-red-600 hover:underline font-medium">Eliminar</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </main>
+
+    <!-- SCRIPT DE INTERACTIVIDAD BÁSICA -->
+    <script>
+        function toggleFormulario() {
+            const formContainer = document.getElementById('formContainer');
+            const btn = document.getElementById('btnToggleForm');
+            
+            if (formContainer.classList.contains('hidden')) {
+                formContainer.classList.remove('hidden');
+                btn.textContent = 'Cancelar';
+                btn.className = 'bg-red-600 hover:bg-red-700 text-white text-xs font-semibold px-4 py-2 rounded transition';
+            } else {
+                formContainer.classList.add('hidden');
+                btn.textContent = '+ Nueva Empresa';
+                btn.className = 'bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-4 py-2 rounded transition';
+            }
+        }
+    </script>
+
+        <!-- PIE DE PÁGINA (FOOTER) -->
+    <footer class="bg-slate-900 text-slate-400 py-8 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="text-center md:text-left">
+                <h4 class="text-white font-bold text-base mb-1">Sistema de Reserva de Buses</h4>
+                <p class="text-xs text-slate-500">Plataforma integrada para gestión y reserva de transporte.</p>
+            </div>
+            <div class="text-center md:text-right text-xs">
+                <p class="text-slate-300 font-semibold mb-1">Contacto</p>
+                <p>+505 8888 8888</p>
+                <p>correo@correo.com</p>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 mt-6 pt-6 border-t border-slate-800 text-center text-xs text-slate-600">
+            © 2026 Sistema de Reserva de Buses. Todos los derechos reservados.
+        </div>
+    </footer>
+</body>
+</html>

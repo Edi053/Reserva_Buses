@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Transporte - Panel de Administración</title>
+    <!-- Tailwind CSS por CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Nuestra hoja de estilos centralizada -->
+    <link rel="stylesheet" href="/src/styles.css">
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- BARRA SUPERIOR (En blanco) -->
+    <header class="bg-white border-b border-slate-200 py-4 px-8 flex justify-between items-center shadow-sm">
+        <div class="flex items-center space-x-4">
+            <h1 class="text-blue-600 font-bold text-lg tracking-tight">Transportes Rápido Andino</h1>
+            <select class="border border-slate-300 rounded text-xs px-2 py-1.5 bg-slate-50 focus:outline-none focus:border-blue-500 text-slate-700 font-medium">
+                <option>Transportes Rápido Andino</option>
+                <option>Bus Express del Sur</option>
+            </select>
+        </div>
+        <button onclick="window.location.href='index.html'" class="bg-red-600 hover:bg-red-700 text-white text-xs font-semibold px-4 py-2 rounded transition">
+            Cerrar Sesión
+        </button>
+    </header>
+
+    <!-- MENÚ DE PESTAÑAS (En blanco) -->
+    <nav class="bg-white px-8 py-2">
+        <div class="max-w-7xl mx-auto flex space-x-8">
+            <button onclick="cambiarPestana('empresa')" id="tab-empresa" class="tab-btn active">Empresa</button>
+            <button onclick="cambiarPestana('buses')" id="tab-buses" class="tab-btn">Buses</button>
+            <button onclick="cambiarPestana('rutas')" id="tab-rutas" class="tab-btn">Rutas</button>
+        </div>
+    </nav>
+    <hr class="border-slate-200">
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="max-w-7xl mx-auto px-6 py-8 w-full flex-grow">
+        
+        <!-- SECCIÓN 1: INFORMACIÓN DE LA EMPRESA -->
+        <section id="seccion-empresa" class="space-y-6 hidden">
+            <div class="admin-card p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="font-bold text-slate-900 text-sm">Información de la Empresa</h3>
+                    <div class="space-x-2">
+                        <button onclick="window.location.href='admin-empresa.html'" class="bg-slate-700 hover:bg-slate-800 text-white text-xs font-semibold px-3 py-1.5 rounded transition">Volver</button>
+                        <button onclick="alert('Modo edición activado')" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-3 py-1.5 rounded transition">Editar</button>
+                    </div>
+                </div>
+                <div class="space-y-2 text-xs text-slate-700">
+                    <p><strong class="text-slate-900">Nombre:</strong> Transportes Rápido Andino</p>
+                    <p><strong class="text-slate-900">Responsable:</strong> Carlos Mendoza</p>
+                    <p><strong class="text-slate-900">Teléfono:</strong> +51987654321</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: GESTIÓN DE BUSES -->
+        <section id="seccion-buses" class="space-y-6 hidden">
+            <div class="flex justify-between items-center">
+                <h3 class="font-bold text-slate-900 text-sm">Gestión de Buses</h3>
+                <button id="btnToggleBus" onclick="toggleFormBus()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-4 py-2 rounded transition">+ Nuevo Bus</button>
+            </div>
+
+            <!-- FORMULARIO OCULTO NUEVO BUS -->
+            <div id="formBusContainer" class="admin-card p-6 hidden">
+                <form onsubmit="event.preventDefault(); alert('Bus registrado con éxito'); toggleFormBus();">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-600 mb-1">Nombre del Bus</label>
+                            <input type="text" required placeholder="Ej. Bus Express 004" class="w-full border border-slate-300 rounded px-3 py-2 text-xs focus:outline-none focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-600 mb-1">Número de Placa (opcional)</label>
+                            <input type="text" placeholder="Ej. ABC-999" class="w-full border border-slate-300 rounded px-3 py-2 text-xs focus:outline-none focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-600 mb-1">Capacidad de Pasajeros</label>
+                            <input type="number" required placeholder="Ej. 45" class="w-full border border-slate-300 rounded px-3 py-2 text-xs focus:outline-none focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-600 mb-1">Tipo de Servicio</label>
+                            <select class="w-full border border-slate-300 rounded px-3 py-2 text-xs focus:outline-none focus:border-blue-500 bg-white">
+                                <option>Expreso</option>
+                                <option>Ruteado</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold py-2.5 rounded transition">
+                            Agregar Bus
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="admin-card p-6">
+                <p class="text-xs font-bold text-slate-700 mb-3">Filtrar Buses</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-500 mb-1">Nombre</label>
+                        <input type="text" placeholder="Buscar por nombre" class="w-full border border-slate-300 rounded px-3 py-2 text-xs focus:outline-none focus:border-blue-500 bg-white">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-500 mb-1">Tipo de Servicio</label>
+                        <select class="w-full border border-slate-300 rounded px-3 py-2 text-xs focus:outline-none focus:border-blue-500 bg-white text-slate-700">
+                            <option>Todos los tipos</option>
+                            <option>Expreso</option>
+                            <option>Ruteado</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-card overflow-hidden">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Placa</th>
+                            <th>Capacidad</th>
+                            <th>Servicio</th>
+                            <th class="text-right">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200">
+                        <tr>
+                            <td class="font-medium text-slate-900">Bus Express 001</td>
+                            <td class="text-slate-500">ABC-123</td>
+                            <td class="text-slate-500">45</td>
+                            <td class="text-slate-500">Expreso</td>
+                            <td class="text-right space-x-3">
+                                <a href="#" class="text-blue-600 hover:underline font-medium">Editar</a>
+                                <a href="#" class="text-red-600 hover:underline font-medium">Eliminar</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: GESTIÓN DE RUTAS -->
+        <section id="seccion-rutas" class="space-y-6">
+            
+            <!-- Cabecera de sección y botón nueva ruta -->
+            <div class="flex justify-between items-center">
+                <h3 class="font-bold text-slate-900 text-sm">Gestión de Rutas</h3>
+                <button id="btnToggleRuta" onclick="toggleFormRuta()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-4 py-2 rounded transition">
+                    + Nueva Ruta
+                </button>
+            </div>
+
+            <!-- FORMULARIO OCULTO NUEVA RUTA (Corregido con Días Disponibles, WhatsApp y Notas) -->
+            <div id="formRutaContainer" class="admin-card p-6 hidden">
+                <form onsubmit="event.preventDefault(); alert('Ruta registrada con éxito'); toggleFormRuta();">
+                    <div class="space-y-4 text-xs">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block font-semibold text-slate-600 mb-1">Origen</label>
+                                <input type="text" required placeholder="Ej. Lima" class="w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500 bg-white">
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-slate-600 mb-1">Destino</label>
+                                <input type="text" required placeholder="Ej. Cusco" class="w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500 bg-white">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block font-semibold text-slate-600 mb-1">Hora de Salida</label>
+                                <input type="time" required class="w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500 bg-white">
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-slate-600 mb-1">Hora de Llegada</label>
+                                <input type="time" required class="w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500 bg-white">
+                            </div>
+                        </div>
+
+                        <!-- DÍAS DISPONIBLES (Checkboxes tal como en tu diseño) -->
+                        <div>
+                            <label class="block font-semibold text-slate-600 mb-2">Días Disponibles</label>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-slate-700">
+                                <label class="flex items-center space-x-2"><input type="checkbox" class="rounded border-slate-300"> <span>Lunes</span></label>
+                                <label class="flex items-center space-x-2"><input type="checkbox" class="rounded border-slate-300"> <span>Martes</span></label>
+                                <label class="flex items-center space-x-2"><input type="checkbox" class="rounded border-slate-300"> <span>Miércoles</span></label>
+                                <label class="flex items-center space-x-2"><input type="checkbox" class="rounded border-slate-300"> <span>Jueves</span></label>
+                                <label class="flex items-center space-x-2"><input type="checkbox" class="rounded border-slate-300"> <span>Viernes</span></label>
+                                <label class="flex items-center space-x-2"><input type="checkbox" class="rounded border-slate-300"> <span>Sábado</span></label>
+                                <label class="flex items-center space-x-2"><input type="checkbox" class="rounded border-slate-300"> <span>Domingo</span></label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block font-semibold text-slate-600 mb-1">Tipo de Servicio</label>
+                            <select id="selectTipoServicio" onchange="verificarTipoServicio()" class="w-full border border-slate-300 rounded px-3 py-2 bg-white focus:outline-none focus:border-blue-500">
+                                <option value="Expreso">Expreso</option>
+                                <option value="Ruteado">Ruteado</option>
+                            </select>
+                        </div>
+
+                        <!-- SECCIÓN DINÁMICA DE PARADAS INTERMEDIAS (Solo aparece si es Ruteado) -->
+                        <div id="seccionParadas" class="hidden border border-slate-200 bg-slate-50 p-4 rounded space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-slate-700">Paradas Intermedias</span>
+                                <button type="button" onclick="agregarParada()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1 rounded text-[11px] font-semibold transition">+ Agregar Parada</button>
+                            </div>
+                            <div id="listaParadas" class="space-y-2"></div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block font-semibold text-slate-600 mb-1">Precio Total (de Origen a Destino)</label>
+                                <input type="number" required placeholder="Ej. 150" class="w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500 bg-white">
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-slate-600 mb-1">Teléfono para Reservar</label>
+                                <input type="text" required placeholder="Ej. +51999888777" class="w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500 bg-white">
+                            </div>
+                        </div>
+
+                        <!-- CAMPO WHATSAPP OPCIONAL -->
+                        <div>
+                            <label class="block font-semibold text-slate-600 mb-1">WhatsApp (opcional)</label>
+                            <input type="text" placeholder="Ej. +51999888777" class="w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500 bg-white">
+                        </div>
+
+                        <!-- NOTAS PARA RESERVAR -->
+                        <div>
+                            <label class="block font-semibold text-slate-600 mb-1">Notas para Reservar</label>
+                            <textarea rows="3" placeholder="Ej. Llamar antes de las 5pm para reservar." class="w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500 bg-white"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 rounded transition">
+                            Agregar Ruta
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tarjeta de Filtros de Rutas -->
+            <div class="admin-card p-6">
+                <p class="text-xs font-bold text-slate-700 mb-3">Filtrar Rutas</p>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-500 mb-1">Origen</label>
+                        <input type="text" placeholder="Buscar origen" class="w-full border border-slate-300 rounded px-3 py-2 text-xs focus:outline-none focus:border-blue-500 bg-white">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-500 mb-1">Destino</label>
+                        <input type="text" placeholder="Buscar destino" class="w-full border border-slate-300 rounded px-3 py-2 text-xs focus:outline-none focus:border-blue-500 bg-white">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-500 mb-1">Tipo de Servicio</label>
+                        <select class="w-full border border-slate-300 rounded px-3 py-2 text-xs focus:outline-none focus:border-blue-500 bg-white text-slate-700">
+                            <option>Todos los tipos</option>
+                            <option>Expreso</option>
+                            <option>Ruteado</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-500 mb-1">Día</label>
+                        <select class="w-full border border-slate-300 rounded px-3 py-2 text-xs focus:outline-none focus:border-blue-500 bg-white text-slate-700">
+                            <option>Todos los días</option>
+                            <option>Lunes</option>
+                            <option>Martes</option>
+                            <option>Miércoles</option>
+                            <option>Jueves</option>
+                            <option>Viernes</option>
+                            <option>Sábado</option>
+                            <option>Domingo</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabla de Rutas -->
+            <div class="admin-card overflow-hidden">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Origen → Destino</th>
+                            <th>Horario</th>
+                            <th>Días</th>
+                            <th>Servicio</th>
+                            <th class="text-right">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200">
+                        <tr>
+                            <td class="font-medium text-slate-900">Lima → Cusco</td>
+                            <td class="text-slate-500">08:00 - 16:00</td>
+                            <td>
+                                <div class="flex space-x-1">
+                                    <span class="w-5 h-5 bg-slate-100 text-slate-600 rounded-full flex items-center justify-center text-[10px] font-bold">L</span>
+                                    <span class="w-5 h-5 bg-slate-100 text-slate-600 rounded-full flex items-center justify-center text-[10px] font-bold">M</span>
+                                    <span class="w-5 h-5 bg-slate-100 text-slate-600 rounded-full flex items-center justify-center text-[10px] font-bold">V</span>
+                                </div>
+                            </td>
+                            <td class="text-slate-500">Expreso</td>
+                            <td class="text-right space-x-3">
+                                <a href="#" onclick="alert('Editar ruta')" class="text-blue-600 hover:underline font-medium">Editar</a>
+                                <a href="#" onclick="alert('Eliminar ruta')" class="text-red-600 hover:underline font-medium">Eliminar</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium text-slate-900">Arequipa → Tacna</td>
+                            <td class="text-slate-500">06:30 - 14:00</td>
+                            <td>
+                                <div class="flex space-x-1">
+                                    <span class="w-5 h-5 bg-slate-100 text-slate-600 rounded-full flex items-center justify-center text-[10px] font-bold">M</span>
+                                    <span class="w-5 h-5 bg-slate-100 text-slate-600 rounded-full flex items-center justify-center text-[10px] font-bold">J</span>
+                                    <span class="w-5 h-5 bg-slate-100 text-slate-600 rounded-full flex items-center justify-center text-[10px] font-bold">S</span>
+                                </div>
+                            </td>
+                            <td class="text-slate-500">Ruteado</td>
+                            <td class="text-right space-x-3">
+                                <a href="#" onclick="alert('Editar ruta')" class="text-blue-600 hover:underline font-medium">Editar</a>
+                                <a href="#" onclick="alert('Eliminar ruta')" class="text-red-600 hover:underline font-medium">Eliminar</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- SCRIPT DE INTERACTIVIDAD Y FORMULARIOS -->
+    <script>
+        // function cambiarPestana(pestana) {
+        //     document.getElementById('seccion-empresa').classList.add('hidden');
+        //     document.getElementById('seccion-buses').classList.add('hidden');
+        //     document.getElementById('seccion-rutas').classList.add('hidden');
+
+        //     document.getElementById('tab-empresa').classList.remove('active');
+        //     document.getElementById('tab-buses').classList.remove('active');
+        //     document.getElementById('tab-rutas').classList.remove('active');
+
+        //     document.getElementById('seccion-' + pestana).classList.remove('hidden');
+        //     document.getElementById('tab-' + pestana).classList.add('active');
+        // }
+
+        // Función para cambiar de pestaña de forma limpia
+        function cambiarPestana(pestana) {
+            // 1. Ocultar todas las secciones
+            document.getElementById('seccion-empresa').classList.add('hidden');
+            document.getElementById('seccion-buses').classList.add('hidden');
+            document.getElementById('seccion-rutas').classList.add('hidden');
+
+            // 2. Quitar la clase 'active' de todos los botones de pestañas
+            document.getElementById('tab-empresa').classList.remove('active');
+            document.getElementById('tab-buses').classList.remove('active');
+            document.getElementById('tab-rutas').classList.remove('active');
+
+            // 3. Mostrar únicamente la sección seleccionada y activar su pestaña
+            document.getElementById('seccion-' + pestana).classList.remove('hidden');
+            document.getElementById('tab-' + pestana).classList.add('active');
+        }
+
+        // Asegurar que al cargar la página siempre inicie en la pestaña 'empresa'
+        window.onload = function() {
+            cambiarPestana('empresa');
+        }
+
+        function toggleFormBus() {
+            const form = document.getElementById('formBusContainer');
+            const btn = document.getElementById('btnToggleBus');
+            if (form.classList.contains('hidden')) {
+                form.classList.remove('hidden');
+                btn.textContent = 'Cancelar';
+                btn.className = 'bg-red-600 hover:bg-red-700 text-white text-xs font-semibold px-4 py-2 rounded transition';
+            } else {
+                form.classList.add('hidden');
+                btn.textContent = '+ Nuevo Bus';
+                btn.className = 'bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-4 py-2 rounded transition';
+            }
+        }
+
+        function toggleFormRuta() {
+            const form = document.getElementById('formRutaContainer');
+            const btn = document.getElementById('btnToggleRuta');
+            if (form.classList.contains('hidden')) {
+                form.classList.remove('hidden');
+                btn.textContent = 'Cancelar';
+                btn.className = 'bg-red-600 hover:bg-red-700 text-white text-xs font-semibold px-4 py-2 rounded transition';
+            } else {
+                form.classList.add('hidden');
+                btn.textContent = '+ Nueva Ruta';
+                btn.className = 'bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-4 py-2 rounded transition';
+            }
+        }
+
+        function verificarTipoServicio() {
+            const tipo = document.getElementById('selectTipoServicio').value;
+            const seccionParadas = document.getElementById('seccionParadas');
+            if (tipo === 'Ruteado') {
+                seccionParadas.classList.remove('hidden');
+            } else {
+                seccionParadas.classList.add('hidden');
+            }
+        }
+
+        function agregarParada() {
+            const lista = document.getElementById('listaParadas');
+            const item = document.createElement('div');
+            item.className = 'flex items-center space-x-2 bg-white p-2 rounded border border-slate-200';
+            item.innerHTML = `
+                <input type="text" placeholder="Nombre de parada" class="flex-1 border border-slate-300 rounded px-2 py-1 text-xs focus:outline-none focus:border-blue-500" required>
+                <input type="time" class="border border-slate-300 rounded px-2 py-1 text-xs focus:outline-none focus:border-blue-500" required>
+                <input type="number" placeholder="Precio (S/.)" class="w-24 border border-slate-300 rounded px-2 py-1 text-xs focus:outline-none focus:border-blue-500" required>
+                <button type="button" onclick="this.parentElement.remove()" class="text-red-600 hover:text-red-800 font-bold px-2 text-xs">✕</button>
+            `;
+            lista.appendChild(item);
+        }
+    </script>
+
+        <!-- PIE DE PÁGINA (FOOTER) -->
+    <footer class="bg-slate-900 text-slate-400 py-8 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="text-center md:text-left">
+                <h4 class="text-white font-bold text-base mb-1">Sistema de Reserva de Buses</h4>
+                <p class="text-xs text-slate-500">Plataforma integrada para gestión y reserva de transporte.</p>
+            </div>
+            <div class="text-center md:text-right text-xs">
+                <p class="text-slate-300 font-semibold mb-1">Contacto</p>
+                <p>+505 8888 8888</p>
+                <p>correo@correo.com</p>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 mt-6 pt-6 border-t border-slate-800 text-center text-xs text-slate-600">
+            © 2026 Sistema de Reserva de Buses. Todos los derechos reservados.
+        </div>
+    </footer>
+</body>
+</html>

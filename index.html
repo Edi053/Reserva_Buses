@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Reserva de Buses</title>
+    <!-- Incluimos Tailwind CSS vía CDN para diseñar rápido y limpio -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 flex flex-col min-h-screen font-sans">
+
+    <!-- BARRA SUPERIOR -->
+    <header class="bg-blue-600 text-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold tracking-wide">Sistema de Reserva de Buses</h1>
+            <div class="space-x-2">
+                <a href="login.html" class="text-xs sm:text-sm bg-white text-blue-600 font-semibold px-3 py-2 rounded-lg hover:bg-slate-100 transition">Ingresar como Administrador</a>
+                <a href="pasajero.html" class="text-xs sm:text-sm bg-blue-700 text-white font-semibold px-3 py-2 rounded-lg hover:bg-blue-800 transition">Buscar Rutas</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL (HERO SECTION) -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 py-12 flex flex-col items-center text-center">
+        
+        <!-- Títulos de bienvenida -->
+        <h2 class="text-3xl md:text-4xl font-extrabold text-slate-800 mb-3">Reserva tu viaje con facilidad</h2>
+        <p class="text-slate-600 max-w-xl text-sm md:text-base mb-10">
+            Encuentra y reserva tus boletos de bus fácil y rápido con un solo clic. Viaja seguro y cómodo.
+        </p>
+
+        <!-- TARJETAS INFORMATIVAS (CARDS) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl mb-12">
+            
+            <!-- Card 1 -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex flex-col items-center">
+                <div class="w-12 h-12 bg-sky-50 text-sky-500 rounded-full flex items-center justify-center text-xl mb-4">📍</div>
+                <h3 class="font-bold text-slate-800 mb-2">Encuentra tu destino</h3>
+                <p class="text-xs text-slate-500">Selecciona tu ciudad de origen y destino para ver las opciones disponibles.</p>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex flex-col items-center">
+                <div class="w-12 h-12 bg-sky-50 text-sky-500 rounded-full flex items-center justify-center text-xl mb-4">📅</div>
+                <h3 class="font-bold text-slate-800 mb-2">Elige tu horario</h3>
+                <p class="text-xs text-slate-500">Selecciona el horario que mejor se ajuste a tus necesidades y disponibilidad.</p>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex flex-col items-center">
+                <div class="w-12 h-12 bg-sky-50 text-sky-500 rounded-full flex items-center justify-center text-xl mb-4">📞</div>
+                <h3 class="font-bold text-slate-800 mb-2">Reserva segura</h3>
+                <p class="text-xs text-slate-500">Realiza tu reserva con confianza y recibe confirmación inmediata vía telefónica.</p>
+            </div>
+
+        </div>
+
+        <!-- BOTÓN PRINCIPAL CENTRAL (Actualizado según nuestra charla) -->
+        <div class="w-full max-w-md">
+            <a href="pasajero.html" class="block w-full py-4 px-6 bg-gradient-to-r from-emerald-500 to-amber-500 text-white font-bold text-lg rounded-xl shadow-lg hover:opacity-95 transition transform hover:-translate-y-0.5 text-center">
+                VER HORARIOS Y RUTAS DISPONIBLES
+            </a>
+        </div>
+
+    </main>
+
+    <!-- PIE DE PÁGINA (FOOTER) -->
+    <footer class="bg-slate-900 text-slate-400 py-8 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="text-center md:text-left">
+                <h4 class="text-white font-bold text-base mb-1">Sistema de Reserva de Buses</h4>
+                <p class="text-xs text-slate-500">Plataforma integrada para gestión y reserva de transporte.</p>
+            </div>
+            <div class="text-center md:text-right text-xs">
+                <p class="text-slate-300 font-semibold mb-1">Contacto</p>
+                <p>+505 8888 8888</p>
+                <p>correo@correo.com</p>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 mt-6 pt-6 border-t border-slate-800 text-center text-xs text-slate-600">
+            © 2026 Sistema de Reserva de Buses. Todos los derechos reservados.
+        </div>
+    </footer>
+
+</body>
+</html>
