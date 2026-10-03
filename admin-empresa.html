@@ -24,7 +24,10 @@
         
         <!-- CABECERA DE SECCIÓN Y BOTÓN PRINCIPAL -->
         <div class="flex justify-between items-center mb-6">
-            <h2 class="text-lg font-bold text-slate-800">Gestión de Empresas</h2>
+            <div>
+                <h2 class="text-lg font-bold text-slate-800">Gestión de Empresas</h2>
+                <p class="text-xs text-slate-500">Seleccione una empresa para administrar su información, flota de buses y rutas.</p>
+            </div>
             <button id="btnToggleForm" onclick="toggleFormulario()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-4 py-2 rounded transition">
                 + Nueva Empresa
             </button>
@@ -51,6 +54,14 @@
             </form>
         </div>
 
+        <!-- FILTRO DE EMPRESAS -->
+        <div class="admin-card p-6 mb-6">
+            <p class="text-xs font-bold text-slate-700 mb-3">Filtrar Empresas</p>
+            <div>
+                <input id="filtroEmpresas" type="text" oninput="filtrarEmpresas()" placeholder="Buscar por nombre de empresa o responsable..." class="w-full border border-slate-300 rounded px-3 py-2 text-xs focus:outline-none focus:border-blue-500 bg-white">
+            </div>
+        </div>
+
         <!-- TABLA DE EMPRESAS -->
         <div class="admin-card overflow-hidden">
             <table class="w-full text-left border-collapse">
@@ -62,7 +73,7 @@
                         <th class="py-3 px-6 text-right">Acciones</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-200 text-xs text-slate-700">
+                <tbody id="listaEmpresas" class="divide-y divide-slate-200 text-xs text-slate-700">
                     <!-- Fila 1 -->
                     <tr class="hover:bg-slate-50 transition">
                         <td class="py-4 px-6 font-medium text-slate-900">Transportes Rápido Andino</td>
@@ -99,6 +110,17 @@
 
     <!-- SCRIPT DE INTERACTIVIDAD BÁSICA -->
     <script>
+        function filtrarEmpresas() {
+            const filtro = document.getElementById('filtroEmpresas').value.trim().toLocaleLowerCase('es');
+            const filas = document.querySelectorAll('#listaEmpresas tr');
+
+            filas.forEach((fila) => {
+                const empresa = fila.cells[0].textContent.toLocaleLowerCase('es');
+                const contacto = fila.cells[1].textContent.toLocaleLowerCase('es');
+                fila.classList.toggle('hidden', !`${empresa} ${contacto}`.includes(filtro));
+            });
+        }
+
         function toggleFormulario() {
             const formContainer = document.getElementById('formContainer');
             const btn = document.getElementById('btnToggleForm');
