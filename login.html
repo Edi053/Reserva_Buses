@@ -27,19 +27,24 @@
                 <p class="text-xs text-slate-500">Ingrese sus credenciales para gestionar el sistema</p>
             </div>
 
-            <!-- FORMULARIO DE ACCESO -->
-            <form onsubmit="event.preventDefault(); window.location.href='admin-detalle-empresa.html';" class="space-y-4">
+            <!-- FORMULARIO DE ACCESO CON VALIDACIÓN -->
+            <form onsubmit="validarLogin(event)" class="space-y-4">
                 <div>
                     <label class="block text-[11px] font-semibold text-slate-600 mb-1">Correo Electrónico</label>
-                    <input type="email" required placeholder="admin@transporte.com" class="w-full border border-slate-300 rounded px-3 py-2 text-xs focus:outline-none focus:border-blue-500 bg-white">
+                    <input type="email" id="email" required placeholder="admin@transporte.com" class="w-full border border-slate-300 rounded px-3 py-2 text-xs focus:outline-none focus:border-blue-500 bg-white">
                 </div>
 
                 <div>
                     <label class="block text-[11px] font-semibold text-slate-600 mb-1">Contraseña</label>
-                    <input type="password" required placeholder="••••••••" class="w-full border border-slate-300 rounded px-3 py-2 text-xs focus:outline-none focus:border-blue-500 bg-white">
+                    <input type="password" id="password" required placeholder="••••••••" class="w-full border border-slate-300 rounded px-3 py-2 text-xs focus:outline-none focus:border-blue-500 bg-white">
                 </div>
 
-                <button onclick="event.preventDefault(); window.location.href='admin-empresa.html';" class="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold py-2.5 rounded transition shadow-sm">
+                <!-- Mensaje de error oculto -->
+                <div id="errorMessage" class="hidden text-red-600 text-[11px] font-semibold text-center bg-red-50 p-2 rounded border border-red-200">
+                    Credenciales incorrectas. Pruebe con: admin@transporte.com / 12345
+                </div>
+
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold py-2.5 rounded transition shadow-sm">
                     Ingresar al Panel
                 </button>
             </form>
@@ -51,6 +56,29 @@
         <span>Sistema de Reserva de Buses</span>
         <span>Panel Administrativo Seguro</span>
     </footer>
+
+    <!-- SCRIPT DE VALIDACIÓN -->
+    <script>
+        function validarLogin(event) {
+            event.preventDefault(); // Evita que se recargue la página
+
+            const emailInput = document.getElementById('email').value.trim();
+            const passwordInput = document.getElementById('password').value.trim();
+            const errorDiv = document.getElementById('errorMessage');
+
+            // Credenciales establecidas para el prototipo
+            const correoCorrecto = "admin@transporte.com";
+            const passwordCorrecto = "12345";
+
+            if (emailInput === correoCorrecto && passwordInput === passwordCorrecto) {
+                // Si coinciden, redirige a la vista principal de empresas
+                window.location.href = 'admin-empresa.html';
+            } else {
+                // Si fallan, muestra el aviso en pantalla
+                errorDiv.classList.remove('hidden');
+            }
+        }
+    </script>
 
 </body>
 </html>
