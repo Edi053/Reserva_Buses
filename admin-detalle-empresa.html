@@ -16,11 +16,11 @@
     <!-- BARRA SUPERIOR (En blanco) -->
     <header class="bg-white border-b border-slate-200 py-4 px-8 flex justify-between items-center shadow-sm">
         <div class="flex items-center space-x-4">
-            <h1 id="tituloEmpresaNav" class="text-blue-600 font-bold text-lg tracking-tight">Transportes Rápido Andino</h1>
+            <h1 id="tituloEmpresaNav" class="text-blue-600 font-bold text-lg tracking-tight">Transportes Rápido Andino
+            </h1>
             <select
+                id="selectCambiarEmpresa" onchange="cambiarEmpresaRapido(this.value)"
                 class="border border-slate-300 rounded text-xs px-2 py-1.5 bg-slate-50 focus:outline-none focus:border-blue-500 text-slate-700 font-medium">
-                <option>Transportes Rápido Andino</option>
-                <option>Bus Express del Sur</option>
             </select>
         </div>
         <button onclick="window.location.href='index.html'"
@@ -50,14 +50,43 @@
                     <div class="space-x-2">
                         <button onclick="window.location.href='admin-empresa.html'"
                             class="bg-slate-700 hover:bg-slate-800 text-white text-xs font-semibold px-3 py-1.5 rounded transition">Volver</button>
-                        <button onclick="alert('Modo edición activado')"
+                        <button id="btnEditarEmpresaDetalle" onclick="toggleFormEditarEmpresaDetalle()"
                             class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-3 py-1.5 rounded transition">Editar</button>
                     </div>
                 </div>
-                <div class="space-y-2 text-xs text-slate-700">
+
+                <!-- VISTA NORMAL DE DATOS -->
+                <div id="vistaInfoEmpresa" class="space-y-2 text-xs text-slate-700">
                     <p><strong class="text-slate-900">Nombre:</strong> <span id="lblNombreEmpresa">Transportes Rápido Andino</span></p>
                     <p><strong class="text-slate-900">Responsable:</strong> <span id="lblResponsable">Carlos Mendoza</span></p>
                     <p><strong class="text-slate-900">Teléfono:</strong> <span id="lblTelefono">+51987654321</span></p>
+                </div>
+
+                <!-- FORMULARIO OCULTO DE EDICIÓN -->
+                <div id="formEditarEmpresaDetalle" class="hidden space-y-4 text-xs pt-2">
+                    <form onsubmit="guardarEdicionEmpresaDetalle(event)">
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block font-semibold text-slate-600 mb-1">Nombre de la Empresa</label>
+                                <input type="text" id="editEmpresaNombre" required
+                                    class="w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500 bg-white">
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-slate-600 mb-1">Responsable</label>
+                                <input type="text" id="editEmpresaResponsable"
+                                    class="w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500 bg-white">
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-slate-600 mb-1">Teléfono de Contacto</label>
+                                <input type="text" id="editEmpresaTelefono" required
+                                    class="w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500 bg-white">
+                            </div>
+                            <div class="flex space-x-2 pt-2">
+                                <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-4 py-2 rounded transition">Guardar Cambios</button>
+                                <button type="button" onclick="toggleFormEditarEmpresaDetalle()" class="bg-slate-300 hover:bg-slate-400 text-slate-700 font-semibold px-4 py-2 rounded transition">Cancelar</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </section>
@@ -71,7 +100,6 @@
                     Nuevo Bus</button>
             </div>
 
-            <!-- FORMULARIO OCULTO NUEVO BUS -->
             <!-- FORMULARIO OCULTO NUEVO BUS -->
             <div id="formBusContainer" class="admin-card p-6 hidden">
                 <form onsubmit="guardarBus(event)">
@@ -114,12 +142,12 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-500 mb-1">Nombre</label>
-                        <input type="text" placeholder="Buscar por nombre"
+                        <input type="text" id="filtroBusNombre" oninput="filtrarBuses()" placeholder="Buscar por nombre"
                             class="w-full border border-slate-300 rounded px-3 py-2 text-xs focus:outline-none focus:border-blue-500 bg-white">
                     </div>
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-500 mb-1">Tipo de Servicio</label>
-                        <select
+                        <select id="filtroBusServicio" onchange="filtrarBuses()"
                             class="w-full border border-slate-300 rounded px-3 py-2 text-xs focus:outline-none focus:border-blue-500 bg-white text-slate-700">
                             <option>Todos los tipos</option>
                             <option>Expreso</option>
@@ -168,220 +196,203 @@
                 </button>
             </div>
 
-            <!-- FORMULARIO OCULTO NUEVA RUTA (Corregido con Días Disponibles, WhatsApp y Notas) -->
-            <div id="formRutaContainer" class="admin-card p-6 hidden">
-                <form onsubmit="event.preventDefault(); alert('Ruta registrada con éxito'); toggleFormRuta();">
-                    <div class="space-y-4 text-xs">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block font-semibold text-slate-600 mb-1">Origen</label>
-                                <input type="text" required placeholder="Ej. Lima"
-                                    class="w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500 bg-white">
-                            </div>
-                            <div>
-                                <label class="block font-semibold text-slate-600 mb-1">Destino</label>
-                                <input type="text" required placeholder="Ej. Cusco"
-                                    class="w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500 bg-white">
-                            </div>
-                        </div>
+            <!-- SECCIÓN 3: GESTIÓN DE RUTAS -->
+            <section id="seccion-rutas" class="space-y-6">
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block font-semibold text-slate-600 mb-1">Hora de Salida</label>
-                                <input type="time" required
-                                    class="w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500 bg-white">
+                <!-- FORMULARIO OCULTO NUEVA RUTA -->
+                <div id="formRutaContainer" class="admin-card p-6 hidden">
+                    <form onsubmit="guardarRuta(event)">
+                        <div class="space-y-4 text-xs">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block font-semibold text-slate-600 mb-1">Origen</label>
+                                    <input type="text" id="rutaOrigen" required placeholder="Ej. Juigalpa"
+                                        class="w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500 bg-white">
+                                </div>
+                                <div>
+                                    <label class="block font-semibold text-slate-600 mb-1">Destino</label>
+                                    <input type="text" id="rutaDestino" required placeholder="Ej. Managua"
+                                        class="w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500 bg-white">
+                                </div>
                             </div>
-                            <div>
-                                <label class="block font-semibold text-slate-600 mb-1">Hora de Llegada</label>
-                                <input type="time" required
-                                    class="w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500 bg-white">
-                            </div>
-                        </div>
 
-                        <!-- DÍAS DISPONIBLES (Checkboxes tal como en tu diseño) -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block font-semibold text-slate-600 mb-1">Hora de Salida</label>
+                                    <input type="time" id="rutaSalida" required
+                                        class="w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500 bg-white">
+                                </div>
+                                <div>
+                                    <label class="block font-semibold text-slate-600 mb-1">Hora de Llegada</label>
+                                    <input type="time" id="rutaLlegada" required
+                                        class="w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500 bg-white">
+                                </div>
+                            </div>
+
+                            <!-- DÍAS DISPONIBLES -->
+                            <div>
+                                <label class="block font-semibold text-slate-600 mb-2">Días Disponibles</label>
+                                <div id="grupoDias" class="grid grid-cols-2 md:grid-cols-4 gap-2 text-slate-700">
+                                    <label class="flex items-center space-x-2"><input type="checkbox" value="Lunes"
+                                            class="rounded border-slate-300"> <span>Lunes</span></label>
+                                    <label class="flex items-center space-x-2"><input type="checkbox" value="Martes"
+                                            class="rounded border-slate-300"> <span>Martes</span></label>
+                                    <label class="flex items-center space-x-2"><input type="checkbox" value="Miércoles"
+                                            class="rounded border-slate-300"> <span>Miércoles</span></label>
+                                    <label class="flex items-center space-x-2"><input type="checkbox" value="Jueves"
+                                            class="rounded border-slate-300"> <span>Jueves</span></label>
+                                    <label class="flex items-center space-x-2"><input type="checkbox" value="Viernes"
+                                            class="rounded border-slate-300"> <span>Viernes</span></label>
+                                    <label class="flex items-center space-x-2"><input type="checkbox" value="Sábado"
+                                            class="rounded border-slate-300"> <span>Sábado</span></label>
+                                    <label class="flex items-center space-x-2"><input type="checkbox" value="Domingo"
+                                            class="rounded border-slate-300"> <span>Domingo</span></label>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block font-semibold text-slate-600 mb-1">Tipo de Servicio</label>
+                                <select id="selectTipoServicio" onchange="verificarTipoServicio()"
+                                    class="w-full border border-slate-300 rounded px-3 py-2 bg-white focus:outline-none focus:border-blue-500">
+                                    <option value="Expreso">Expreso</option>
+                                    <option value="Ruteado">Ruteado</option>
+                                </select>
+                            </div>
+
+                            <!-- SECCIÓN DINÁMICA DE PARADAS INTERMEDIAS -->
+                            <div id="seccionParadas"
+                                class="hidden border border-slate-200 bg-slate-50 p-4 rounded space-y-3">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-bold text-slate-700">Paradas Intermedias</span>
+                                    <button type="button" onclick="agregarParada()"
+                                        class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1 rounded text-[11px] font-semibold transition">+
+                                        Agregar Parada</button>
+                                </div>
+                                <div id="listaParadas" class="space-y-2"></div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block font-semibold text-slate-600 mb-1">Precio Total</label>
+                                    <input type="text" id="rutaPrecio" required placeholder="Ej. C$ 150.00"
+                                        class="w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500 bg-white">
+                                </div>
+                                <div>
+                                    <label class="block font-semibold text-slate-600 mb-1">Teléfono para
+                                        Reservar</label>
+                                    <input type="text" id="rutaTelefono" required placeholder="Ej. +505 8888 8888"
+                                        class="w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500 bg-white">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block font-semibold text-slate-600 mb-1">WhatsApp (opcional)</label>
+                                <input type="text" id="rutaWhatsapp" placeholder="Ej. +505 8888 8888"
+                                    class="w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500 bg-white">
+                            </div>
+
+                            <div>
+                                <label class="block font-semibold text-slate-600 mb-1">Notas para Reservar</label>
+                                <textarea id="rutaNotas" rows="3"
+                                    placeholder="Ej. Llamar antes de las 5pm para reservar."
+                                    class="w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500 bg-white"></textarea>
+                            </div>
+
+                            <button type="submit"
+                                class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 rounded transition">
+                                Agregar Ruta
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Tarjeta de Filtros de Rutas -->
+                <div class="admin-card p-6">
+                    <p class="text-xs font-bold text-slate-700 mb-3">Filtrar Rutas</p>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                         <div>
-                            <label class="block font-semibold text-slate-600 mb-2">Días Disponibles</label>
-                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-slate-700">
-                                <label class="flex items-center space-x-2"><input type="checkbox"
-                                        class="rounded border-slate-300"> <span>Lunes</span></label>
-                                <label class="flex items-center space-x-2"><input type="checkbox"
-                                        class="rounded border-slate-300"> <span>Martes</span></label>
-                                <label class="flex items-center space-x-2"><input type="checkbox"
-                                        class="rounded border-slate-300"> <span>Miércoles</span></label>
-                                <label class="flex items-center space-x-2"><input type="checkbox"
-                                        class="rounded border-slate-300"> <span>Jueves</span></label>
-                                <label class="flex items-center space-x-2"><input type="checkbox"
-                                        class="rounded border-slate-300"> <span>Viernes</span></label>
-                                <label class="flex items-center space-x-2"><input type="checkbox"
-                                        class="rounded border-slate-300"> <span>Sábado</span></label>
-                                <label class="flex items-center space-x-2"><input type="checkbox"
-                                        class="rounded border-slate-300"> <span>Domingo</span></label>
-                            </div>
+                            <label class="block text-[11px] font-semibold text-slate-500 mb-1">Origen</label>
+                            <input type="text" id="filtroRutaOrigen" oninput="filtrarRutas()"
+                                placeholder="Buscar origen"
+                                class="w-full border border-slate-300 rounded px-3 py-2 text-xs focus:outline-none focus:border-blue-500 bg-white">
                         </div>
-
                         <div>
-                            <label class="block font-semibold text-slate-600 mb-1">Tipo de Servicio</label>
-                            <select id="selectTipoServicio" onchange="verificarTipoServicio()"
-                                class="w-full border border-slate-300 rounded px-3 py-2 bg-white focus:outline-none focus:border-blue-500">
+                            <label class="block text-[11px] font-semibold text-slate-500 mb-1">Destino</label>
+                            <input type="text" id="filtroRutaDestino" oninput="filtrarRutas()"
+                                placeholder="Buscar destino"
+                                class="w-full border border-slate-300 rounded px-3 py-2 text-xs focus:outline-none focus:border-blue-500 bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-500 mb-1">Tipo de Servicio</label>
+                            <select id="filtroRutaServicio" onchange="filtrarRutas()"
+                                class="w-full border border-slate-300 rounded px-3 py-2 text-xs focus:outline-none focus:border-blue-500 bg-white text-slate-700">
+                                <option value="">Todos los tipos</option>
                                 <option value="Expreso">Expreso</option>
                                 <option value="Ruteado">Ruteado</option>
                             </select>
                         </div>
-
-                        <!-- SECCIÓN DINÁMICA DE PARADAS INTERMEDIAS (Solo aparece si es Ruteado) -->
-                        <div id="seccionParadas"
-                            class="hidden border border-slate-200 bg-slate-50 p-4 rounded space-y-3">
-                            <div class="flex justify-between items-center">
-                                <span class="font-bold text-slate-700">Paradas Intermedias</span>
-                                <button type="button" onclick="agregarParada()"
-                                    class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1 rounded text-[11px] font-semibold transition">+
-                                    Agregar Parada</button>
-                            </div>
-                            <div id="listaParadas" class="space-y-2"></div>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block font-semibold text-slate-600 mb-1">Precio Total (de Origen a
-                                    Destino)</label>
-                                <input type="number" required placeholder="Ej. 150"
-                                    class="w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500 bg-white">
-                            </div>
-                            <div>
-                                <label class="block font-semibold text-slate-600 mb-1">Teléfono para Reservar</label>
-                                <input type="text" required placeholder="Ej. +51999888777"
-                                    class="w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500 bg-white">
-                            </div>
-                        </div>
-
-                        <!-- CAMPO WHATSAPP OPCIONAL -->
                         <div>
-                            <label class="block font-semibold text-slate-600 mb-1">WhatsApp (opcional)</label>
-                            <input type="text" placeholder="Ej. +51999888777"
-                                class="w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500 bg-white">
+                            <label class="block text-[11px] font-semibold text-slate-500 mb-1">Día</label>
+                            <select id="filtroRutaDia" onchange="filtrarRutas()"
+                                class="w-full border border-slate-300 rounded px-3 py-2 text-xs focus:outline-none focus:border-blue-500 bg-white text-slate-700">
+                                <option value="">Todos los días</option>
+                                <option value="Lunes">Lunes</option>
+                                <option value="Martes">Martes</option>
+                                <option value="Miércoles">Miércoles</option>
+                                <option value="Jueves">Jueves</option>
+                                <option value="Viernes">Viernes</option>
+                                <option value="Sábado">Sábado</option>
+                                <option value="Domingo">Domingo</option>
+                            </select>
                         </div>
-
-                        <!-- NOTAS PARA RESERVAR -->
-                        <div>
-                            <label class="block font-semibold text-slate-600 mb-1">Notas para Reservar</label>
-                            <textarea rows="3" placeholder="Ej. Llamar antes de las 5pm para reservar."
-                                class="w-full border border-slate-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500 bg-white"></textarea>
-                        </div>
-
-                        <button type="submit"
-                            class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 rounded transition">
-                            Agregar Ruta
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-            <!-- Tarjeta de Filtros de Rutas -->
-            <div class="admin-card p-6">
-                <p class="text-xs font-bold text-slate-700 mb-3">Filtrar Rutas</p>
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <div>
-                        <label class="block text-[11px] font-semibold text-slate-500 mb-1">Origen</label>
-                        <input type="text" placeholder="Buscar origen"
-                            class="w-full border border-slate-300 rounded px-3 py-2 text-xs focus:outline-none focus:border-blue-500 bg-white">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-semibold text-slate-500 mb-1">Destino</label>
-                        <input type="text" placeholder="Buscar destino"
-                            class="w-full border border-slate-300 rounded px-3 py-2 text-xs focus:outline-none focus:border-blue-500 bg-white">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-semibold text-slate-500 mb-1">Tipo de Servicio</label>
-                        <select
-                            class="w-full border border-slate-300 rounded px-3 py-2 text-xs focus:outline-none focus:border-blue-500 bg-white text-slate-700">
-                            <option>Todos los tipos</option>
-                            <option>Expreso</option>
-                            <option>Ruteado</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-semibold text-slate-500 mb-1">Día</label>
-                        <select
-                            class="w-full border border-slate-300 rounded px-3 py-2 text-xs focus:outline-none focus:border-blue-500 bg-white text-slate-700">
-                            <option>Todos los días</option>
-                            <option>Lunes</option>
-                            <option>Martes</option>
-                            <option>Miércoles</option>
-                            <option>Jueves</option>
-                            <option>Viernes</option>
-                            <option>Sábado</option>
-                            <option>Domingo</option>
-                        </select>
                     </div>
                 </div>
-            </div>
 
-            <!-- Tabla de Rutas -->
-            <div class="admin-card overflow-hidden">
-                <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>Origen → Destino</th>
-                            <th>Horario</th>
-                            <th>Días</th>
-                            <th>Servicio</th>
-                            <th class="text-right">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-200">
-                        <tr>
-                            <td class="font-medium text-slate-900">Lima → Cusco</td>
-                            <td class="text-slate-500">08:00 - 16:00</td>
-                            <td>
-                                <div class="flex space-x-1">
-                                    <span
-                                        class="w-5 h-5 bg-slate-100 text-slate-600 rounded-full flex items-center justify-center text-[10px] font-bold">L</span>
-                                    <span
-                                        class="w-5 h-5 bg-slate-100 text-slate-600 rounded-full flex items-center justify-center text-[10px] font-bold">M</span>
-                                    <span
-                                        class="w-5 h-5 bg-slate-100 text-slate-600 rounded-full flex items-center justify-center text-[10px] font-bold">V</span>
-                                </div>
-                            </td>
-                            <td class="text-slate-500">Expreso</td>
-                            <td class="text-right space-x-3">
-                                <a href="#" onclick="alert('Editar ruta')"
-                                    class="text-blue-600 hover:underline font-medium">Editar</a>
-                                <a href="#" onclick="alert('Eliminar ruta')"
-                                    class="text-red-600 hover:underline font-medium">Eliminar</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="font-medium text-slate-900">Arequipa → Tacna</td>
-                            <td class="text-slate-500">06:30 - 14:00</td>
-                            <td>
-                                <div class="flex space-x-1">
-                                    <span
-                                        class="w-5 h-5 bg-slate-100 text-slate-600 rounded-full flex items-center justify-center text-[10px] font-bold">M</span>
-                                    <span
-                                        class="w-5 h-5 bg-slate-100 text-slate-600 rounded-full flex items-center justify-center text-[10px] font-bold">J</span>
-                                    <span
-                                        class="w-5 h-5 bg-slate-100 text-slate-600 rounded-full flex items-center justify-center text-[10px] font-bold">S</span>
-                                </div>
-                            </td>
-                            <td class="text-slate-500">Ruteado</td>
-                            <td class="text-right space-x-3">
-                                <a href="#" onclick="alert('Editar ruta')"
-                                    class="text-blue-600 hover:underline font-medium">Editar</a>
-                                <a href="#" onclick="alert('Eliminar ruta')"
-                                    class="text-red-600 hover:underline font-medium">Eliminar</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                <!-- Tabla de Rutas Dinámica -->
+                <div class="admin-card overflow-hidden">
+                    <table class="admin-table w-full text-left border-collapse">
+                        <thead>
+                            <tr
+                                class="border-b border-slate-200 text-[11px] font-bold text-slate-500 uppercase tracking-wider bg-slate-50/50">
+                                <th class="py-3 px-4">Origen → Destino</th>
+                                <th class="py-3 px-4">Horario</th>
+                                <th class="py-3 px-4">Días</th>
+                                <th class="py-3 px-4">Servicio</th>
+                                <th class="py-3 px-4 text-right">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaRutas" class="divide-y divide-slate-200 text-xs text-slate-700">
+                            <!-- Contenido dinámico desde localStorage -->
+                        </tbody>
+                    </table>
+                </div>
 
-        </section>
+            </section>
 
     </main>
 
     <!-- CONTENEDOR DE NOTIFICACIONES FLOTANTES (TOAST) -->
     <div id="toastContainer" class="fixed bottom-5 right-5 z-50 space-y-2"></div>
-    
+
+    <!-- VENTANA FLOTANTE (MODAL DE CONFIRMACIÓN) -->
+<div id="modalConfirmacion" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden flex items-center justify-center z-50 px-4">
+    <div class="bg-white rounded-xl shadow-xl max-w-sm w-full p-6 space-y-4 animate-in fade-in zoom-in duration-200">
+        <div class="text-center space-y-2">
+            <div class="w-10 h-10 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto text-lg font-bold">⚠️</div>
+            <h3 id="modalTitulo" class="font-bold text-slate-900 text-sm">¿Estás seguro?</h3>
+            <p id="modalMensaje" class="text-xs text-slate-500">Esta acción no se puede deshacer.</p>
+        </div>
+        <div class="flex space-x-3 pt-2">
+            <button onclick="cerrarModal()" class="w-1/2 bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-semibold py-2 rounded transition">
+                Cancelar
+            </button>
+            <button id="btnConfirmarAccion" class="w-1/2 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold py-2 rounded transition">
+                Sí, eliminar
+            </button>
+        </div>
+    </div>
+</div>
+
     <!-- SCRIPT DE INTERACTIVIDAD Y FORMULARIOS -->
     <!--
     <script>

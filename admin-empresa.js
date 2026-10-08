@@ -87,12 +87,40 @@ function mostrarNotificacion(mensaje, tipo = 'success') {
 }
 
 function eliminarEmpresa(index) {
-    if (confirm('¿Estás seguro de eliminar esta empresa?')) {
-        let empresas = obtenerEmpresas();
-        empresas.splice(index, 1);
-        localStorage.setItem('empresasTransporte', JSON.stringify(empresas));
-        cargarEmpresas();
-    }
+    let empresas = obtenerEmpresas();
+    const empresaActual = empresas[index];
+    empresaIndexTemporal = index;
+
+    // Personalizamos los textos del modal para la eliminación
+    document.getElementById('modalTitulo').textContent = '¿Estás seguro de eliminar esta empresa?';
+    document.getElementById('modalMensaje').textContent = `Esta acción borrará permanentemente a "${empresaActual.nombre}" junto con sus configuraciones.`;
+    
+    const btnConfirmar = document.getElementById('btnConfirmarAccion');
+    btnConfirmar.textContent = 'Sí, eliminar';
+    btnConfirmar.className = 'w-1/2 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold py-2 rounded transition';
+
+    // Asignamos la acción de borrado al botón del modal
+    btnConfirmar.onclick = ejecutarEliminacionEmpresa;
+
+    // Mostramos el modal
+    document.getElementById('modalConfirmacion').classList.remove('hidden');
+}
+
+function ejecutarEliminacionEmpresa() {
+    if (empresaIndexTemporal === null) return;
+
+    let empresas = obtenerEmpresas();
+    empresas.splice(empresaIndexTemporal, 1);
+    localStorage.setItem('empresasTransporte', JSON.stringify(empresas));
+
+    mostrarNotificacion('Empresa eliminada con éxito.', 'success');
+
+    // Cerramos el modal y limpiamos la variable temporal
+    document.getElementById('modalConfirmacion').classList.add('hidden');
+    empresaIndexTemporal = null;
+
+    // Recargamos la lista
+    cargarEmpresas();
 }
 
 function filtrarEmpresas() {

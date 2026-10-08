@@ -114,8 +114,8 @@ function cargarRutasPasajero(filtradas = null) {
                         <p class="text-slate-400 italic">"${r.notas || 'Sin notas adicionales.'}"</p>
                     </div>
                     <div class="flex space-x-2">
-                        <button onclick="alert('Iniciando llamada...')" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-4 py-1.5 rounded transition">Llamar</button>
-                        <button onclick="alert('Abriendo WhatsApp...')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-4 py-1.5 rounded transition">WhatsApp</button>
+                        <a href="tel:${r.telefono}" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-4 py-1.5 rounded transition flex items-center justify-center">Llamar</a>
+                        <a href="https://wa.me/${(r.whatsapp || r.telefono).replace(/[^0-9]/g, '')}?text=${encodeURIComponent('Hola, deseo reservar un espacio para la ruta de ' + r.origen + ' a ' + r.destino + ' (' + r.salida + ')')}" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-4 py-1.5 rounded transition flex items-center justify-center">WhatsApp</a>
                     </div>
                 </div>
             </div>
