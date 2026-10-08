@@ -59,7 +59,7 @@ function cargarRutasPasajero(filtradas = null) {
             let detalleParadas = r.paradas.map((p, idx) => `
                 <div class="flex justify-between border-b border-slate-200 pb-1 text-slate-600">
                     <span>${idx + 1}. ${p.nombre} (${p.hora})</span>
-                    <span class="font-semibold text-slate-800">${p.precio}</span>
+                    <span class="font-semibold text-slate-800">${String(p.precio).startsWith('C$') ? p.precio : 'C$ ' + p.precio}</span>
                 </div>
             `).join('');
 
@@ -81,11 +81,11 @@ function cargarRutasPasajero(filtradas = null) {
             <div class="admin-card p-6 space-y-4">
                 <div class="flex justify-between items-start">
                     <div>
-                        <h3 class="font-bold text-slate-900 text-sm">${r.origen} → ${r.destino}</h3>
+                        <h3 class="font-bold text-slate-900 text-sm">${r.origen} →${r.destino}</h3>
                         <p class="text-xs text-slate-500 font-medium">${r.empresaNombre}</p>
                     </div>
                     <div class="text-right">
-                        <span class="font-bold text-emerald-600 text-base">${r.precio}</span>
+                        <span class="font-bold text-emerald-600 text-base">${String(r.precio).startsWith('C$') ? r.precio : 'C$ ' + r.precio}</span>
                         <p class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">${r.servicio}</p>
                     </div>
                 </div>
